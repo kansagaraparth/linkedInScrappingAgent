@@ -1,23 +1,19 @@
+<!-- app.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LinkedIn Scrapper</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', Arial, sans-serif;
       overflow-x: hidden;
-      background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+      background: #0f172a;
+      color: white;
     }
 
-    /* Video Background */
     .hero-section {
       position: relative;
       height: 100vh;
@@ -26,30 +22,26 @@
 
     .video-background {
       position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: brightness(0.7);
       z-index: -1;
+      filter: brightness(0.3);
     }
 
-    /* Navigation */
     .navigation {
       position: absolute;
       top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
+      width: 100%;
       padding: 1rem 2rem;
-      background: rgba(99, 102, 241, 0.2);
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(10px);
     }
 
     .nav-container {
       max-width: 1200px;
-      margin: 0 auto;
+      margin: auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -58,125 +50,87 @@
     .logo {
       font-size: 1.5rem;
       font-weight: bold;
-      color: white;
+      color: #e2e8f0;
     }
 
     .nav-links {
-      display: flex;
-      gap: 2rem;
       list-style: none;
+      display: flex;
+      gap: 1.5rem;
     }
 
     .nav-links a {
-      color: white;
+      color: #cbd5e1;
       text-decoration: none;
-      font-weight: 500;
       transition: color 0.3s ease;
     }
 
     .nav-links a:hover {
-      color: #94a3b8;
+      color: #6366f1;
     }
 
-    /* Hero Content */
     .hero-overlay {
-      position: relative;
-      z-index: 10;
-      height: 100vh;
       display: flex;
       align-items: center;
-      background: rgba(71, 85, 105, 0.7);
+      height: 100vh;
+      background: rgba(2, 6, 23, 0.7);
     }
 
     .hero-content {
       max-width: 1200px;
-      width: 90%;
       margin: 0 auto;
       padding: 0 2rem;
     }
 
     .hero-title {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 600;
-      color: white;
-      line-height: 1.1;
-      margin-bottom: 2rem;
-      letter-spacing: -0.02em;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 1.5rem;
     }
 
-    .hero-title .highlight {
+    .highlight {
       color: #6366f1;
     }
 
     .hero-subtitle {
-      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.25rem;
+      line-height: 1.7;
       max-width: 600px;
-      line-height: 1.6;
-      margin-bottom: 3rem;
-      font-weight: 300;
+      color: #cbd5e1;
+      margin-bottom: 2.5rem;
     }
 
     .cta-button {
-      display: inline-block;
       background: #6366f1;
       color: white;
-      text-decoration: none;
-      padding: 1rem 2.5rem;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      padding: 1rem 2rem;
       border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .cta-button:hover {
       background: #4f46e5;
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
     }
 
-    /* Mobile Responsiveness */
     @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-      }
-
-      .hero-content {
-        padding: 0 1rem;
-      }
-
-      .navigation {
-        padding: 1rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero-title {
-        margin-bottom: 1.5rem;
-      }
-
-      .hero-subtitle {
-        margin-bottom: 2rem;
-      }
-
-      .cta-button {
-        padding: 0.8rem 2rem;
-        font-size: 1rem;
-      }
+      .nav-links { display: none; }
+      .hero-content { padding: 0 1rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Hero Section with Video Background -->
   <section class="hero-section">
     <video class="video-background" autoplay muted loop playsinline>
-      <source src="./hero-background.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      <source src="./hero-background.mp4" type="video/mp4" />
     </video>
 
-    <!-- Navigation -->
     <nav class="navigation">
       <div class="nav-container">
         <div class="logo">LinkedIn Scrapper</div>
@@ -189,39 +143,17 @@
       </div>
     </nav>
 
-    <!-- Hero Content -->
     <div class="hero-overlay">
       <div class="hero-content">
         <h1 class="hero-title">
-          Extract LinkedIn data with
-          <span class="highlight"> precision.</span>
+          Extract LinkedIn data with <span class="highlight">Precision.</span>
         </h1>
         <p class="hero-subtitle">
-          LinkedIn Scrapper is an AI-powered tool to extract professional profiles, company data, and job listings with advanced automation and intelligent filtering.
+          An AI-powered tool to extract professional profiles, company data, and job listings with advanced automation and intelligent filtering.
         </p>
-        <button class="cta-button" onclick="window.location.href='index.html'">
-          Start Scraping
-        </button>
+        <button class="cta-button" onclick="window.location.href='index.html'">Start Scraping</button>
       </div>
     </div>
   </section>
-
-  <script>
-    function handleGetStarted() {
-      // You can customize this function later
-      alert('Start Scraping button clicked! You can customize this action.');
-      console.log('Start Scraping button was clicked');
-    }
-
-    // Video handling
-    document.addEventListener('DOMContentLoaded', function() {
-      const video = document.querySelector('.video-background');
-      
-      // Force video reload if needed
-      if (video) {
-        video.load();
-      }
-    });
-  </script>
 </body>
 </html>
