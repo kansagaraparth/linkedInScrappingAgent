@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LinkedIn ChatBot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav {
+      background: #6366f1;
+      color: white;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 768px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .chat-history {
+      flex: 1;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-msg {
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+
+    .chat-msg.user b {
+      color: #4f46e5;
+    }
+
+    .chat-msg.bot b {
+      color: #1f2937;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    }
+
+    .chat-input-row input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      background: #f3f4f6;
+    }
+
+    .chat-input-row button {
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .chat-input-row button:hover {
+      background: #4f46e5;
+    }
+
+    @media (max-width: 600px) {
+      .chat-container {
+        padding: 0.5rem;
+      }
+
+      .chat-input-row {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .chat-input-row button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav">LinkedIn ChatBot</div>
+
+  <div class="chat-container">
+    <div id="chatHistory" class="chat-history"></div>
+    <form id="chatForm" class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Ask your question..." required />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const chatHistory = document.getElementById('chatHistory');
+    const API_URL = 'http://localhost:5050/linkedinScrapper';
+
+    chatForm.onsubmit = async function (e) {
+      e.preventDefault();
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-msg user';
+      userMsg.innerHTML = `<b>You:</b> ${msg}`;
+      chatHistory.appendChild(userMsg);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+
+      chatInput.value = '';
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: msg })
+        });
+        const data = await res.json();
+
+        const botMsg = document.createElement('div');
+        botMsg.className = 'chat-msg bot';
+        botMsg.innerHTML = `<b>Bot:</b> ${data.success ? data.result : (data.message || 'Something went wrong.')}`;
+        chatHistory.appendChild(botMsg);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      } catch (err) {
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'chat-msg bot';
+        errorMsg.innerHTML = `<b>Bot:</b> Network or server error.`;
+        chatHistory.appendChild(errorMsg);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      }
+    };
+  </script>
+</body>
+</html>
